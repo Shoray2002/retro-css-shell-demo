@@ -1,3 +1,4 @@
+/* eslint-disable linebreak-style */
 /*!
  * AnderShell - Just a small CSS demo
  *
@@ -24,35 +25,25 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-import './src/styles.scss';
-import {terminal} from './src/terminal.js';
+import "./src/styles.scss";
+import { terminal } from "./src/terminal.js";
 
 // Banner text
 const banner = `
-Initializing AnderShell 3000 v0.1
-Copyright (c) 2014 Anders Evenrud <andersevenrud@gmail.com>
-
+EquinoXell 3000 v0.1
 .............................................................................
 
-@@@  @@@  @@@  @@@@@@@@  @@@        @@@@@@@   @@@@@@   @@@@@@@@@@   @@@@@@@@
-@@@  @@@  @@@  @@@@@@@@  @@@       @@@@@@@@  @@@@@@@@  @@@@@@@@@@@  @@@@@@@@
-@@!  @@!  @@!  @@!       @@!       !@@       @@!  @@@  @@! @@! @@!  @@!     
-!@!  !@!  !@!  !@!       !@!       !@!       !@!  @!@  !@! !@! !@!  !@!     
-@!!  !!@  @!@  @!!!:!    @!!       !@!       @!@  !@!  @!! !!@ @!@  @!!!:!  
-!@!  !!!  !@!  !!!!!:    !!!       !!!       !@!  !!!  !@!   ! !@!  !!!!!:  
-!!:  !!:  !!:  !!:       !!:       :!!       !!:  !!!  !!:     !!:  !!:     
-:!:  :!:  :!:  :!:        :!:      :!:       :!:  !:!  :!:     :!:  :!:     
- :::: :: :::    :: ::::   :: ::::   ::: :::  ::::: ::  :::     ::    :: ::::
-  :: :  : :    : :: ::   : :: : :   :: :: :   : :  :    :      :    : :: :: 
-
+######## ########  ########    ###     ######  ##     ## ########  ########    ##     ## ##     ## ##    ## ######## 
+   ##    ##     ## ##         ## ##   ##    ## ##     ## ##     ## ##          ##     ## ##     ## ###   ##    ##    
+   ##    ##     ## ##        ##   ##  ##       ##     ## ##     ## ##          ##     ## ##     ## ####  ##    ##    
+   ##    ########  ######   ##     ##  ######  ##     ## ########  ######      ######### ##     ## ## ## ##    ##    
+   ##    ##   ##   ##       #########       ## ##     ## ##   ##   ##          ##     ## ##     ## ##  ####    ##    
+   ##    ##    ##  ##       ##     ## ##    ## ##     ## ##    ##  ##          ##     ## ##     ## ##   ###    ##    
+   ##    ##     ## ######## ##     ##  ######   #######  ##     ## ########    ##     ##  #######  ##    ##    ##    
 -----------------------------------------------------------------------------
-All graphics are created using CSS, no static files or images
+HAPPY HUNTING!
 -----------------------------------------------------------------------------
-
-
-
 Type 'help for a list of available commands.
-
 
 
 `;
@@ -61,68 +52,73 @@ Type 'help for a list of available commands.
 const helpText = `
 Available commands:
 
-help - This output
-contact - Prints contact information
-contact <key> - Opens up relevant contact link
-clear - Clears the display
 ls - Lists files
 pwd - Lists current directory
 cd <dir> - Enters directory
 cat <filename> - Lists file contents
+contact - Prints contact information
+contact <key> - Opens up relevant contact link
+clear - Clears the display
 `;
 
 // Contact texts
 const contactInfo = {
-  email: 'andersevenrud@gmail.com',
-  twitter: 'https://twitter.com/andersevenrud',
-  github: 'https://github.com/andersevenrud'
+  website: "equinox.iiitl.ac.in",
+  twitter: "twitter.com/equinoxiiitl",
+  discord: "discord.gg/PytHHH8yxN",
 };
 
 const contactList = Object.keys(contactInfo)
   .reduce((result, key) => result.concat([`${key} - ${contactInfo[key]}`]), [])
-  .join('\n');
+  .join("\n");
 
 const contactText = `
-Created by Anders Evenrud
+Equinox 2022
 
 ${contactList}
 
-Use ex. 'contact twitter' to open the links.
+Use ex. 'contact discord' to open the link.
 `;
 
-const openContact = key => window.open(key === 'email'
-  ? `mailto:${contactInfo[key]}`
-  : contactInfo[key]);
+const openContact = (key) => {
+  window.open(`https://${contactInfo[key]}`);
+};
 
 // File browser
-const browser = (function() {
-  let current = '/';
+const browser = (function () {
+  let current = "/";
 
-  let tree = [{
-    location: '/',
-    filename: 'documents',
-    type: 'directory'
-  }, {
-    location: '/',
-    filename: 'AUTHOR',
-    type: 'file',
-    content: 'Anders Evenrud <andersevenrud@gmail.com>'
-  }];
+  let tree = [
+    {
+      location: "/",
+      filename: "documents",
+      type: "directory",
+    },
+    {
+      location: "/",
+      filename: "Level_1",
+      type: "file",
+      content: "Hint",
+    },
+  ];
 
-  const fix = str => str.trim().replace(/\/+/g, '/') || '/';
+  const fix = (str) => str.trim().replace(/\/+/g, "/") || "/";
 
-  const setCurrent = dir => {
-    if (typeof dir !== 'undefined') {
-      if (dir == '..') {
-        const parts = current.split('/');
+  const setCurrent = (dir) => {
+    if (typeof dir !== "undefined") {
+      if (dir == "..") {
+        const parts = current.split("/");
         parts.pop();
-        current = fix(parts.join('/'));
+        current = fix(parts.join("/"));
       } else {
-        const found = tree.filter(iter => iter.location === current)
-          .find(iter => iter.filename === fix(dir));
+        const found = tree
+          .filter(
+            (iter) => iter.location === current && iter.type === "directory"
+          )
+          .find((iter) => iter.filename === fix(dir));
 
         if (found) {
-          current = fix(current + '/' + dir);
+          current = fix(current + "/" + dir);
         } else {
           return `Directory '${dir}' not found in '${current}'`;
         }
@@ -135,22 +131,30 @@ const browser = (function() {
   };
 
   const ls = () => {
-    const found = tree.filter(iter => iter.location === current);
-    const fileCount = found.filter(iter => iter.type === 'file').length;
-    const directoryCount = found.filter(iter => iter.type === 'directory').length;
+    const found = tree.filter((iter) => iter.location === current);
+    const fileCount = found.filter((iter) => iter.type === "file").length;
+    const directoryCount = found.filter(
+      (iter) => iter.type === "directory"
+    ).length;
     const status = `${fileCount} file(s), ${directoryCount} dir(s)`;
-    const maxlen = Math.max(...found.map(iter => iter.filename).map(n => n.length));
+    const maxlen = Math.max(
+      ...found.map((iter) => iter.filename).map((n) => n.length)
+    );
 
-    const list = found.map(iter => {
-      return `${iter.filename.padEnd(maxlen + 1, ' ')} <${iter.type}>`;
-    }).join('\n');
+    const list = found
+      .map((iter) => {
+        return `${iter.filename.padEnd(maxlen + 1, " ")} <${iter.type}>`;
+      })
+      .join("\n");
 
     return `${list}\n\n${status} in ${current}`;
   };
 
-  const cat = filename => {
-    const found = tree.filter(iter => iter.location === current);
-    const foundFile = found.find(iter => iter.filename === filename);
+  const cat = (filename) => {
+    const found = tree.filter(
+      (iter) => iter.location === current && iter.type === "file"
+    );
+    const foundFile = found.find((iter) => iter.filename === filename);
 
     if (foundFile) {
       return foundFile.content;
@@ -160,10 +164,10 @@ const browser = (function() {
   };
 
   return {
-    cwd: () => setCurrent(),
-    cd: dir => setCurrent(fix(dir)),
+    pwd: () => setCurrent(),
+    cd: (dir) => setCurrent(fix(dir)),
     cat,
-    ls
+    ls,
   };
 })();
 
@@ -173,25 +177,26 @@ const browser = (function() {
 
 const load = () => {
   const t = terminal({
-    prompt: () => `$ ${browser.cwd()} > `,
+    prompt: () => `₹ ${browser.pwd()} > `,
     banner,
     commands: {
       help: () => helpText,
-      cwd: () => browser.cwd(),
-      cd: dir => browser.cd(dir),
+      pwd: () => browser.pwd(),
+      cd: (dir) => (!dir ? `Please enter a directory name` : browser.cd(dir)),
       ls: () => browser.ls(),
-      cat: file => browser.cat(file),
+      cat: (file) => browser.cat(file),
       clear: () => t.clear(),
       contact: (key) => {
         if (key in contactInfo) {
           openContact(key);
           return `Opening ${key} - ${contactInfo[key]}`;
+        } else if (key) {
+          return `No contact found for '${key}'`;
         }
-
         return contactText;
-      }
-    }
+      },
+    },
   });
 };
 
-document.addEventListener('DOMContentLoaded', load);
+document.addEventListener("DOMContentLoaded", load);
