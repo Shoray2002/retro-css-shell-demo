@@ -1,16 +1,12 @@
-# AnderShell 3000
+# EquinoXhell 3000
 
-A retro-looking shell using CSS and JavaScript.
+Treasure Hunt Equinox'22.
 
-Somewhat inspired by PipBoy and old-school UNIX terminals.
-
-![Screenshot](https://raw.githubusercontent.com/andersevenrud/retro-css-shell-demo/master/screenshot.png)
+![Screenshot](https://user-images.githubusercontent.com/76423272/154836445-b2c0ea56-381d-4132-af84-a21491eae943.png)
 
 # Demo
 
-[See it in action here](https://crt.no/) ([old version](http://andersevenrud.github.io/shell/))
-
-*Please note that this demo is currently outdated and will be updated asap*
+[See it in action here](https://treasure-hunt-equinox.surge.sh/)
 
 # Running
 
